@@ -1,12 +1,6 @@
 from rest_framework import serializers
 
-from cinema.models import (
-    CinemaHall,
-    Genre,
-    Actor,
-    Movie,
-    MovieSession
-)
+from cinema.models import CinemaHall, Genre, Actor, Movie, MovieSession
 
 
 class CinemaHallSerializer(serializers.ModelSerializer):
@@ -18,7 +12,7 @@ class CinemaHallSerializer(serializers.ModelSerializer):
 class GenreSerializer(serializers.ModelSerializer):
     class Meta:
         model = Genre
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ActorSerializer(serializers.ModelSerializer):
@@ -31,12 +25,10 @@ class MovieSerializer(serializers.ModelSerializer):
     genres = serializers.SlugRelatedField(
         many=True,
         read_only=True,
-        slug_field='name'
+        slug_field="name"
     )
     actors = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='full_name'
+        many=True, read_only=True, slug_field="full_name"
     )
 
     class Meta:
@@ -50,13 +42,21 @@ class MovieRetrieveSerializer(MovieSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
-    movie_title = serializers.ReadOnlyField(source='movie.title')
-    cinema_hall_name = serializers.ReadOnlyField(source='cinema_hall.name')
-    cinema_hall_capacity = serializers.ReadOnlyField(source='cinema_hall.capacity')
+    movie_title = serializers.ReadOnlyField(source="movie.title")
+    cinema_hall_name = serializers.ReadOnlyField(source="cinema_hall.name")
+    cinema_hall_capacity = serializers.ReadOnlyField(
+        source="cinema_hall.capacity"
+    )
 
     class Meta:
         model = MovieSession
-        fields = ("id", "show_time", "movie_title", "cinema_hall_name", "cinema_hall_capacity")
+        fields = (
+            "id",
+            "show_time",
+            "movie_title",
+            "cinema_hall_name",
+            "cinema_hall_capacity",
+        )
 
 
 class MovieSessionRetrieveSerializer(MovieSessionSerializer):
@@ -66,15 +66,3 @@ class MovieSessionRetrieveSerializer(MovieSessionSerializer):
     class Meta:
         model = MovieSession
         fields = ("id", "show_time", "movie", "cinema_hall")
-
-
-# class OrderSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Order
-#         fields = '__all__'
-#
-#
-# class TicketSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Ticket
-#         fields = "__all__"
