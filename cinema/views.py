@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from cinema.models import (
     CinemaHall,
@@ -14,7 +15,7 @@ from cinema.serializers import (
     MovieSerializer,
     MovieSessionSerializer,
     MovieRetrieveSerializer,
-    MovieSessionRetrieveSerializer
+    MovieSessionRetrieveSerializer, MovieCreateUpdateSerializer, MovieSessionCreateUpdateSerializer
 )
 
 
@@ -39,7 +40,9 @@ class MovieViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "retrieve":
             return MovieRetrieveSerializer
-        return MovieSerializer
+        elif self.action == "list":
+            return MovieSerializer
+        return MovieCreateUpdateSerializer
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
@@ -51,7 +54,9 @@ class MovieSessionViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == "retrieve":
             return MovieSessionRetrieveSerializer
-        return MovieSessionSerializer
+        elif self.action == "list":
+            return MovieSessionSerializer
+        return MovieSessionCreateUpdateSerializer
 
 
 # class OrderViewSet(viewsets.ModelViewSet):
