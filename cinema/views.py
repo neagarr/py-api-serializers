@@ -34,7 +34,7 @@ class ActorViewSet(viewsets.ModelViewSet):
 
 
 class MovieViewSet(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.prefetch_related("actors", "genres").all()
 
     def get_serializer_class(self):
         if self.action == "retrieve":
@@ -43,7 +43,7 @@ class MovieViewSet(viewsets.ModelViewSet):
 
 
 class MovieSessionViewSet(viewsets.ModelViewSet):
-    queryset = MovieSession.objects.all()
+    queryset = MovieSession.objects.select_related("movie", "cinema_hall").all()
 
     def get_serializer_class(self):
         if self.action == "retrieve":
